@@ -8,10 +8,10 @@ import (
 	"net/url"
 	"time"
 
-	coreErrs "github.com/apernet/hysteria/core/errors"
-	"github.com/apernet/hysteria/core/internal/congestion"
-	"github.com/apernet/hysteria/core/internal/protocol"
-	"github.com/apernet/hysteria/core/internal/utils"
+	coreErrs "github.com/apernet/hysteria/core/v2/errors"
+	"github.com/apernet/hysteria/core/v2/internal/congestion"
+	"github.com/apernet/hysteria/core/v2/internal/protocol"
+	"github.com/apernet/hysteria/core/v2/internal/utils"
 
 	"github.com/apernet/quic-go"
 	"github.com/apernet/quic-go/http3"
@@ -87,9 +87,8 @@ func (c *clientImpl) connect() (*HandshakeInfo, error) {
 	// Prepare RoundTripper
 	var conn quic.EarlyConnection
 	rt := &http3.RoundTripper{
-		EnableDatagrams: true,
 		TLSClientConfig: tlsConfig,
-		QuicConfig:      quicConfig,
+		QUICConfig:      quicConfig,
 		Dial: func(ctx context.Context, _ string, tlsCfg *tls.Config, cfg *quic.Config) (quic.EarlyConnection, error) {
 			qc, err := quic.DialEarly(ctx, pktConn, c.config.ServerAddr, tlsCfg, cfg)
 			if err != nil {
